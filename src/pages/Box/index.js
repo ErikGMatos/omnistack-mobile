@@ -1,7 +1,13 @@
 import React, { Component } from "react";
 import AsyncStorage from "@react-native-community/async-storage";
 import ImagePicker from "react-native-image-picker";
-import { View, Text, FlatList, TouchableOpacity } from "react-native";
+import {
+    View,
+    Text,
+    FlatList,
+    TouchableOpacity,
+    ToastAndroid
+} from "react-native";
 import RNFS from "react-native-fs";
 import FileViewer from "react-native-file-viewer";
 import socket from "socket.io-client";
@@ -24,7 +30,7 @@ export default class Box extends Component {
         this.subscribeToNewFiles();
 
         const box = await AsyncStorage.getItem("@RocketBox:box");
-        console.log(box);
+
         this.subscribeToNewFiles(box);
         const response = await api.get(`/boxes/${box}`);
 
@@ -32,7 +38,6 @@ export default class Box extends Component {
     }
 
     subscribeToNewFiles = box => {
-        
         const io = socket("https://omnistack-backend-erik.herokuapp.com");
 
         io.emit("connectRoom", box);
@@ -57,7 +62,7 @@ export default class Box extends Component {
 
             await FileViewer.open(filePath);
         } catch (error) {
-            console.log("arquivo nao suportado");
+            ToastAndroid.show("Arquivo não suportado", 2000);
         }
     };
 
@@ -95,7 +100,7 @@ export default class Box extends Component {
                     name: `${prefix}.${ext}`
                 });
 
-                api.post(`/boxes/${this.state.box._id}`, data);
+                await api.post(`/boxes/${this.state.box._id}/files`, data);
             }
         });
     };

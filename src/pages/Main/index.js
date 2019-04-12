@@ -13,8 +13,8 @@ export default class Main extends Component {
         newBox: ""
     };
 
-    componentDidMount() {
-        const box = AsyncStorage.getItem("@RocketBox:box");
+    async componentDidMount() {
+        const box = await AsyncStorage.getItem("@RocketBox:box");
         console.log(box);
         if (box) {
             this.props.navigation.navigate("Box");
@@ -26,6 +26,7 @@ export default class Main extends Component {
         });
 
         await AsyncStorage.setItem("@RocketBox:box", response.data._id);
+        this.props.navigation.navigate("Box");
     };
 
     render() {

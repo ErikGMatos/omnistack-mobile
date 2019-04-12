@@ -1,7 +1,7 @@
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
 
-import Box from "./pages/Box";
 import Main from "./pages/Main";
+import Box from "./pages/Box";
 
 const Routes = createAppContainer(
     createSwitchNavigator({
